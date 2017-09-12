@@ -1,0 +1,87 @@
+#container {
+	background-color: white;
+	width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#login{
+	margin-top: 5px;
+	float: right;
+}
+
+#header{
+	background-color: #white;
+	padding: 10px;
+
+}
+#title img{
+	height: 70px;
+	width: 70px;
+	float: left;
+}
+#title p.head{
+	position: absolute;
+	left: 200px;
+	top: -40px;
+	color: #055495;
+	font-size: 70px;
+	width: 1000px;
+	float: right;
+}
+#title p.follow{
+	color: red;
+	font-size: 20px;
+	text-align: right;
+	clear: both;
+	
+}
+
+#menubar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #055495;
+}
+
+#menubar li {
+    float: left;
+}
+
+#menubar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+
+#menubar li a:hover {
+    background-color: #2196F3;
+}
+input[placeholder]{
+    color: red ;
+    font-weight: bold;
+}
+#containt {
+	padding: 10px;
+}
+#data p{
+	width: 800px;
+	float: left;
+	text-align: justify;
+}
+#news{
+	width: 240px;
+	float: right;
+
+}
+#news ul {
+	list-style-type: none;
+}
+#footer{
+	clear: both;
+	background-color: #055495;
+	color: white;
+	font-size: 25px;
+}
