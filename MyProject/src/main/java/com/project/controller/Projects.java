@@ -33,7 +33,7 @@ public class Projects {
 		List<UserProject> userProjectList = userProjectService.getUserProjectList();
 		List<Category> categoryList = categoryService.getCategory();
 		ModelAndView mv = new ModelAndView("project-list");
-		mv.addObject("userProjectList", userProjectList);
+		mv.addObject("projectList", userProjectList);
 		mv.addObject("categoryList", categoryList);
 		return mv;
 	}

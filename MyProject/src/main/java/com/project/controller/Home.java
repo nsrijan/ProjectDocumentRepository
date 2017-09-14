@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -82,28 +82,66 @@ public class Home {
 	}
 	
 	
-	@RequestMapping(value="upload-project", method=RequestMethod.POST)
+	@RequestMapping(value = "upload-project", method = RequestMethod.POST)
 	public ModelAndView uploadUserProject(@ModelAttribute UserProject userProject, BindingResult bindingResult,
-		@RequestParam(value="userProjectFile", required=true) MultipartFile userProjectFile, HttpServletRequest request){
-		userProject.setUserProjectFile(userProject.getUserProjectTitle()+".pdf");
-		String	rootDirectory	=request.getSession().getServletContext().getRealPath("/");
-		System.out.println("5--->>>" + rootDirectory);
-		File reportLocation = new File(request.getSession().getServletContext().getRealPath("/document/" + userProject.getUserProjectFile() + "/"));
-		try {
-			FileUtils.writeByteArrayToFile(reportLocation, userProjectFile.getBytes());
-		} catch (IOException e) {
-			e.printStackTrace();
+			@RequestParam(value = "userProjectFile", required = true) MultipartFile userProjectFile,
+			HttpServletRequest request) {
+		
+		System.out.println("file name===>>>>>>" + userProjectFile.getOriginalFilename());
+		String ext = FilenameUtils.getExtension(userProjectFile.getOriginalFilename());
+		
+		if ( !ext.equals("pdf") ) {
+			return new ModelAndView("upload", "errorMsg", "Please upload pdf file");
 		}
 		
-		userProjectService.addUserProject(userProject);
-		List<UserProject> userProjectList = userProjectService.getUserProjectList();
-		ModelAndView mv = new ModelAndView("home");
-		mv.addObject("userProjectList", userProjectList);
-		return mv;
+		else {
+			
+/*			String path=request.getRealPath("/resources/img/products");
+			String filename = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+			System.out.println(path+"=========>>>>>> "+filename);        
+
+			byte[] bytes = pimages.getBytes();  
+			BufferedOutputStream stream =new BufferedOutputStream(new FileOutputStream(  
+					new File(path + File.separator + filename)));  
+			System.out.println(path +"=========>>>>>> "+ File.separator +"=========>>>>>> "+ filename);        
+
+			stream.write(bytes);  
+			stream.flush();  
+			stream.close();  
+
+			product.setPimages(filename);*/
+			
+			
+			
+			userProject.setUserProjectFile(userProject.getUserProjectTitle() + ".pdf");
+			String rootDirectory = request.getSession().getServletContext().getRealPath("/resources/documents");
+			System.out.println("root Directory --->>>" + rootDirectory);
+			
+			File reportLocation = new File(request.getSession().getServletContext()
+					.getRealPath("/document/" + userProject.getUserProjectFile() + "/"));
+			System.out.println("report location: --->>>>" + reportLocation);
+			userProject.setReportLocate(reportLocation.toString());
+	
+			try {
+				FileUtils.writeByteArrayToFile(reportLocation, userProjectFile.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			userProjectService.addUserProject(userProject);
+			List<UserProject> userProjectList = userProjectService.getUserProjectList();
+			
+			for (UserProject up : userProjectList){
+				System.out.println("user Project:===????" + up.getUserProjectTitle());
+			}
+			
+			ModelAndView mv = new ModelAndView("project-list");
+			mv.addObject("projectList", userProjectList);
+			return mv;
+		}
+		
 	}
-	
-	
-	
+
 	@RequestMapping(value="viewUserProject")
 	public ModelAndView viewUserProject(@RequestParam("userProjectId") int userProjectId){
 		

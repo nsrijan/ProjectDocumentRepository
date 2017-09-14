@@ -23,9 +23,8 @@
 
 						<td>${project.userProjectTag }</td>
 
-						<td><c:url value="viewUserProject" var="View">
-								<c:param name="userProjectId" value="${project.userProjectId}"></c:param>
-							</c:url> <a href="${View}">View</a></td>
+						<td><a href="${project.reportLocate}" target="_blank">View</a></td>
+							
 					</tr>
 				</c:forEach>
 			</table>

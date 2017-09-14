@@ -37,11 +37,23 @@ public class UserProject implements Serializable {
 	@JoinColumn(name="CATEGORY_ID")
 	private Category category;
 	
+	@Column(name="PROJECT_LOCATION")
+	private String reportLocate;
+	
+	
 //	@ManyToOne
 //	List<ProjectOfUser> projectOfUser = new ArrayList();
 
 
 
+
+	public String getReportLocate() {
+		return reportLocate;
+	}
+
+	public void setReportLocate(String reportLocate) {
+		this.reportLocate = reportLocate;
+	}
 
 	public String getUserProjectFile() {
 		return userProjectFile;
