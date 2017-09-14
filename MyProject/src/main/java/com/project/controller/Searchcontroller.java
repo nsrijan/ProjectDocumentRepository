@@ -27,7 +27,7 @@ public class Searchcontroller {
 		List<UserProject> projectList = searchService.getSearchResult(searchProject);
 
 		if (projectList.isEmpty()) {
-			return new ModelAndView("noProject");
+			return new ModelAndView("project-list");
 		}
 
 		else {
