@@ -5,12 +5,18 @@
 
 	<c:choose>
 		<c:when test="${not empty projectList}">
+		
+		<c:if test="${not empty successMsg}">
+			<p>${ successMsg  }</p>
+		</c:if>
+		
 			<table border="1" cellspacing="0">
 				<tr>
 					<th>Project Title</th>
 					<th>Project File Name</th>
 					<th>Project Description</th>
 					<th>Project Tag</th>
+					<th>Action</th>
 				</tr>
 				<c:forEach items="${projectList}" var="project">
 
@@ -23,8 +29,9 @@
 
 						<td>${project.userProjectTag }</td>
 
-						<td><a href="${project.reportLocate}" target="_blank">View</a></td>
-							
+						<%-- <td><a href="${project.reportLocate}" target="_blank" >View</a></td> --%>
+						<td><a href="detailsUserProject?userProjectId=${project.userProjectId  }">View</a>|
+						<a href="viewUserProject?userProjectId=${project.userProjectId  }">Details</a></td>
 					</tr>
 				</c:forEach>
 			</table>

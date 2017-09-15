@@ -5,15 +5,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title></title>
 </head>
 <body>
-	<h1>View Project</h1>
-	<table>
-		<c:forEach items="${userProject}" var="project">
-		System.out.println("=====>>>>Display"+userProject);
-			<tr><td><img alt="" src="<c:url value='/document/${project.userProjectFile }'/>" /></td></tr>
-		</c:forEach>
-	</table>
+	<h1>View Project</h1>	
+	
+	<h3>Title</h3>
+	<p>${userProject.userProjectFile }</p>
+	<h3>Description</h3>
+	<p>${userProject.userProjectDescription }</p>
+	
 </body>
 </html>

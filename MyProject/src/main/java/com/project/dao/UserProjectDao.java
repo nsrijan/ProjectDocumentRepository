@@ -36,9 +36,11 @@ public class UserProjectDao {
 		Query qry = session.createQuery("from UserProject where userProjectId= :id");
 		qry.setParameter("id", userProjectId);
 		UserProject userProject = (UserProject)qry.list().get(0);
+		userProject.setViewCount(userProject.getViewCount()+1);
 		session.getTransaction().commit();
 //		session.close();
 		return userProject;
 	}
+
 	
 }
