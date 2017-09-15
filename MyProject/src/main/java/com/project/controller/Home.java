@@ -2,9 +2,13 @@ package com.project.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
@@ -95,24 +99,7 @@ public class Home {
 		}
 		
 		else {
-			
-/*			String path=request.getRealPath("/resources/img/products");
-			String filename = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
-			System.out.println(path+"=========>>>>>> "+filename);        
-
-			byte[] bytes = pimages.getBytes();  
-			BufferedOutputStream stream =new BufferedOutputStream(new FileOutputStream(  
-					new File(path + File.separator + filename)));  
-			System.out.println(path +"=========>>>>>> "+ File.separator +"=========>>>>>> "+ filename);        
-
-			stream.write(bytes);  
-			stream.flush();  
-			stream.close();  
-
-			product.setPimages(filename);*/
-			
-			
-			
+						
 			userProject.setUserProjectFile(userProject.getUserProjectTitle() + ".pdf");
 			String rootDirectory = request.getSession().getServletContext().getRealPath("/resources/documents");
 			System.out.println("root Directory --->>>" + rootDirectory);
@@ -121,6 +108,7 @@ public class Home {
 					.getRealPath("/document/" + userProject.getUserProjectFile() + "/"));
 			System.out.println("report location: --->>>>" + reportLocation);
 			userProject.setReportLocate(reportLocation.toString());
+			userProject.setViewCount(0);
 	
 			try {
 				FileUtils.writeByteArrayToFile(reportLocation, userProjectFile.getBytes());
@@ -136,6 +124,7 @@ public class Home {
 			}
 			
 			ModelAndView mv = new ModelAndView("project-list");
+			mv.addObject("successMsg", "Project uploaded successfully.");
 			mv.addObject("projectList", userProjectList);
 			return mv;
 		}
@@ -146,10 +135,32 @@ public class Home {
 	public ModelAndView viewUserProject(@RequestParam("userProjectId") int userProjectId){
 		
 		UserProject userProject = userProjectService.viewUserProjectById(userProjectId);
+		System.out.println("title:--->>>>>" + userProject.getUserProjectTitle());
 		ModelAndView mv = new ModelAndView("displayProject");
 		mv.addObject("userProject", userProject);
 		return mv;
 	}
 	
+	@RequestMapping(value="detailsUserProject")
+	public void detailsUserProject(@RequestParam("userProjectId") int userProjectId,
+			HttpServletRequest request,
+	        HttpSession httpSession,
+	    HttpServletResponse response){
+		
+		UserProject userProject = userProjectService.viewUserProjectById(userProjectId);
+		System.out.println("title:--->>>>>" + userProject.getUserProjectTitle());
+
+		try {
+			Path path = Paths.get(userProject.getReportLocate());
+	        byte[] documentInBytes = Files.readAllBytes(path);         
+	        response.setHeader("Content-Disposition", "inline; filename=\"report.pdf\"");
+	        response.setDateHeader("Expires", -1);
+	        response.setContentType("application/pdf");
+	        response.setContentLength(documentInBytes.length);
+	        response.getOutputStream().write(documentInBytes);
+	    } catch (Exception ioe) {
+	    } finally {
+	    }
+	}
 	
 }

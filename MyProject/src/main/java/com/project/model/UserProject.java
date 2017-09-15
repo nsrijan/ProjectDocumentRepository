@@ -40,12 +40,23 @@ public class UserProject implements Serializable {
 	@Column(name="PROJECT_LOCATION")
 	private String reportLocate;
 	
+	@Column(name="PROJECT_VIEW")
+	private int viewCount;
+	
 	
 //	@ManyToOne
 //	List<ProjectOfUser> projectOfUser = new ArrayList();
 
 
 
+
+	public int getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
+	}
 
 	public String getReportLocate() {
 		return reportLocate;
